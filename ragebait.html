@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ragebait Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+    }
+
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    #output {
+      margin-top: 20px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      min-height: 60px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    #copiedMsg {
+      color: green;
+      font-size: 14px;
+      display: none;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ragebait Generator</h1>
+  <p>Paste text below and turn it into mildly infuriating capitalization.</p>
+
+  <textarea id="inputText" placeholder="Type or paste text here..."></textarea>
+  <br />
+  <button onclick="generateRagebait()">Generate</button>
+  <button onclick="copyOutput()">Copy Output</button>
+
+  <div id="output"></div>
+  <div id="copiedMsg">Copied!</div>
+
+  <script>
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function capitalizeRandomLetters(word) {
+      if (word.length <= 1) return word;
+
+      const chars = word.split("");
+      const eligible = [];
+
+      for (let i = 1; i < chars.length; i++) {
+        if (/[a-zA-Z]/.test(chars[i])) {
+          eligible.push(i);
+        }
+      }
+
+      if (eligible.length === 0) return word;
+
+      const chosen = [];
+
+      const firstPick = eligible[randomInt(0, eligible.length - 1)];
+      chosen.push(firstPick);
+
+      for (const i of eligible) {
+        if (i === firstPick) continue;
+
+        const isConsecutive = chosen.some(index => Math.abs(index - i) === 1);
+        if (!isConsecutive && Math.random() < 0.25) {
+          chosen.push(i);
+        }
+      }
+
+      for (const i of chosen) {
+        chars[i] = chars[i].toUpperCase();
+      }
+
+      return chars.join("");
+    }
+
+    function generateRagebait() {
+      const input = document.getElementById("inputText").value;
+
+      const parts = input.split(/(\s+)/);
+
+      const output = parts.map(part => {
+        if (/^\s+$/.test(part) || part === "") return part;
+        return capitalizeRandomLetters(part);
+      }).join("");
+
+      document.getElementById("output").textContent = output;
+      document.getElementById("copiedMsg").style.display = "none";
+    }
+
+    function copyOutput() {
+      const text = document.getElementById("output").textContent;
+
+      if (!text) return;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const msg = document.getElementById("copiedMsg");
+        msg.style.display = "block";
+
+        setTimeout(() => {
+          msg.style.display = "none";
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>
