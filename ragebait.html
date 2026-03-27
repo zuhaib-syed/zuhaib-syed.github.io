@@ -13,7 +13,7 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 24px;
       border: 2px solid #333;
@@ -25,6 +25,24 @@
     h1 {
       margin-top: 0;
       margin-bottom: 10px;
+    }
+
+    .info-icon {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .main-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .left-panel,
+    .right-panel {
+      flex: 1 1 420px;
+      min-width: 320px;
     }
 
     textarea {
@@ -68,31 +86,15 @@
       background: #e8e8e8;
     }
 
-    .output-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .output-label {
-      font-size: 16px;
-      padding-top: 12px;
-      min-width: 55px;
-    }
-
-    .output-area {
-      flex: 1;
-    }
-
     #output {
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 12px;
-      min-height: 60px;
+      min-height: 120px;
       white-space: pre-wrap;
       word-wrap: break-word;
       background: #fafafa;
+      box-sizing: border-box;
     }
 
     .copy-wrap {
@@ -121,32 +123,63 @@
     label {
       font-size: 15px;
     }
+
+    .output-heading {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .main-row {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Ragebait Generator <span title="If someone is annoying you, paste their words here and give them the ragebaited text back (letters are randomly capitalized to give the effect of mockery). Works nearly every time">ℹ️</span></h1>
+    <h1>
+      Ragebait Generator
+      <span
+        class="info-icon"
+        onclick="showInfo('If someone is annoying you, paste their words here and give them the ragebaited text back (letters are randomly capitalized to give the effect of mockery). Works nearly every time')"
+      >ℹ️</span>
+    </h1>
 
-    <textarea id="inputText" placeholder="Type or paste text here..."></textarea>
+    <div class="main-row">
+      <div class="left-panel">
+        <textarea id="inputText" placeholder="Type or paste text here..."></textarea>
 
-    <div class="top-controls">
-      <button onclick="generateRagebait()">Generate</button>
+        <div class="top-controls">
+          <button onclick="generateRagebait()">Generate</button>
 
-      <div class="control-group">
-        <label title="Adds 💅 emojis to the end based on set level, great for pushing your bait off the edge." for="zestSlider">Zest:</label>
-        <input type="range" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
-        <span id="zestValue">0</span>
+          <div class="control-group">
+            <label for="zestSlider">
+              Zest:
+              <span
+                class="info-icon"
+                onclick="showInfo('Adds 💅 emojis to the end based on set level, great for pushing your bait off the edge.')"
+              >ℹ️</span>
+            </label>
+            <input type="range" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
+            <span id="zestValue">0</span>
+          </div>
+
+          <div class="control-group">
+            <input type="checkbox" id="quoteToggle" />
+            <label for="quoteToggle">
+              Add quotations
+              <span
+                class="info-icon"
+                onclick="showInfo('Great for clarity. Indicates that this is someone else\\'s words and not your own')"
+              >ℹ️</span>
+            </label>
+          </div>
+        </div>
       </div>
 
-      <div class="control-group">
-        <input type="checkbox" id="quoteToggle" />
-        <label title="Great for clarity. Indicates that this is someone else's words and not your own" for="quoteToggle">Add quotations</label>
-      </div>
-    </div>
-
-    <div class="output-row">
-      <div class="output-label">Output:</div>
-      <div class="output-area">
+      <div class="right-panel">
         <div id="output"></div>
         <div class="copy-wrap">
           <button onclick="copyOutput()">Copy Output</button>
@@ -161,6 +194,10 @@
   </div>
 
   <script>
+    function showInfo(text) {
+      alert(text);
+    }
+
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
