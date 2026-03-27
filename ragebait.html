@@ -156,13 +156,9 @@
 
           <div class="control-group">
             <label for="zestSlider">
-              Zest:
-              <span
-                class="info-icon"
-                onclick="showInfo('Adds 💅 emojis to the end based on set level, great for pushing your bait off the edge.')"
-              >ℹ️</span>
+              Zest
             </label>
-            <input type="range" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
+            <input type="number" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
             <span id="zestValue">0</span>
           </div>
 
@@ -170,10 +166,6 @@
             <input type="checkbox" id="quoteToggle" />
             <label for="quoteToggle">
               Add quotations
-              <span
-                class="info-icon"
-                onclick="showInfo('Great for clarity. Indicates that this is someone else\\'s words and not your own')"
-              >ℹ️</span>
             </label>
           </div>
         </div>
