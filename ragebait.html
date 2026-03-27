@@ -105,6 +105,11 @@
       margin-top: 10px;
     }
 
+    input[type="number"] {
+  vertical-align: middle;
+  width: 5px;
+}
+
     #copiedMsg {
       color: green;
       font-size: 14px;
@@ -118,11 +123,6 @@
       border-top: 1px solid #ddd;
       font-size: 14px;
       color: #555;
-    }
-
-    input[type="range"] {
-      vertical-align: middle;
-      width: 5px;
     }
 
     label {
@@ -163,7 +163,7 @@
             <label for="zestSlider">
               Zest
             </label>
-            <input type="number" id="zestSlider" min="0" value="0" />
+            <input type="number" id="zestSlider" min="0" max="4" value="0" />
           </div>
 
           <div class="control-group">
