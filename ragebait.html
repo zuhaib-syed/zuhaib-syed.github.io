@@ -59,12 +59,16 @@
     }
 
     .top-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.top-controls > * {
+  flex-shrink: 0;
+}
 
     .control-group {
       display: flex;
@@ -158,8 +162,7 @@
             <label for="zestSlider">
               Zest
             </label>
-            <input type="number" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
-            <span id="zestValue">0</span>
+            <input type="number" id="zestSlider" min="0" value="0" />
           </div>
 
           <div class="control-group">
@@ -193,11 +196,7 @@
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-
-    function updateZestValue() {
-      document.getElementById("zestValue").textContent = document.getElementById("zestSlider").value;
-    }
-
+    
     function stripOuterQuotes(text) {
       let trimmed = text.trim();
 
