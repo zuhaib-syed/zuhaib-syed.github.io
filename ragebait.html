@@ -110,9 +110,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Ragebait Generator</h1>
-    <p>If someone is annoying you, paste their words here and give them the ragebaited text back. Works nearly every time</p>
-
+    <h1>Ragebait Generator</h1><span title="If someone is annoying you, paste their words here and give them the ragebaited text back (letters are randomly capitalized to give the effect of mockery). Works nearly every time">ℹ️</span>
     <textarea id="inputText" placeholder="Type or paste text here..."></textarea>
     <br />
     <button onclick="generateRagebait()">Generate</button>
@@ -120,21 +118,21 @@
 
     <div class="controls">
       <div class="control-group">
-        <label for="zestSlider">Zest:</label>
+        <label title="Adds 💅 emojis to the end based on set level, great for pushing your bait off the edge." for="zestSlider">Zest:</label>
         <input type="range" id="zestSlider" min="0" max="3" value="0" oninput="updateZestValue()" />
         <span id="zestValue">0</span>
       </div>
 
       <div class="control-group">
         <input type="checkbox" id="quoteToggle" />
-        <label for="quoteToggle">Add quotations</label>
+        <label title="Great for clarity. Indicates that this is someone else's words and not your own" for="quoteToggle">Add quotations</label>
       </div>
     </div>
 
     <div id="output"></div>
     <div id="copiedMsg">Copied!</div>
 
-    <div class="footer">
+    <div style="display: none;" class="footer">
       <p>Made by zebu4466</p>
     </div>
   </div>
