@@ -68,6 +68,18 @@
   <button onclick="switchMap('national', this)">National</button>
 </div>
 
+<p id="mapDescription" style="
+  text-align:center;
+  max-width:800px;
+  margin: 10px auto 20px;
+  font-family: system-ui, sans-serif;
+  line-height:1.5;
+">
+If you are a Classics student in Massachusetts, you can use our map below to find a local chapter near you!
+If your town has a fully opaque JCL icon, you can click on it to be taken to its website! If the icon is semi-transparent, your JCL may not have a website yet, and clicking will allow you to contact the chapter chair for more information. 
+Websites and chapter chair contacts not listed here may be found in the MassJCL Local Chapter Directory (https://www.massjcl.org/local-chapters/).
+</p>
+
 <!-- ================= STATE MAP ================= -->
 <div id="stateMap" class="map-container active">
   <img src="./massachusetts.png" usemap="#state-map" style="width:100%;">
@@ -117,7 +129,20 @@ function switchMap(type, btn) {
   btn.classList.add('active');
   btn.disabled = true;
 
-  resizeImageMap();
+  // 🔥 NEW: change description text
+  const desc = document.getElementById('mapDescription');
+
+  if (type === 'state') {
+    desc.innerHTML = `If you are a Classics student in Massachusetts, you can use our map below to find a local chapter near you!
+If your town has a fully opaque JCL (Junior Classical League) icon, you can click on it to be taken to its website! If the icon is semi-transparent, your JCL may not have a website yet, and clicking will allow you to contact the chapter chair for more information. 
+Websites and chapter chair contacts not listed here may be found in the MassJCL Local Chapter Directory (https://www.massjcl.org/local-chapters/).`;
+  } else {
+    desc.innerHTML = `Are you a Classics student outside of Massachusetts? No problem - the JCL network runs nation-wide!
+If your state has a fully opaque JCL icon, you can click on it to be taken to its website! If the icon is semi-transparent, your JCL may not have a website yet, and clicking will allow you to contact your state chair for more information. 
+Websites and state chair contacts not listed here may be found in the NJCL State Chair Directory. (https://docs.google.com/document/d/10PrESX08Wlp4vbPl3WvZmjSAkApUy-iojBlrYHHyhko/edit?usp=sharing)`;
+  }
+
+  setTimeout(resizeImageMap, 100); // 👈 CRITICAL FIX
 }
 
 /* ===== RESIZE MAP ===== */
