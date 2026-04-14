@@ -1,0 +1,180 @@
+<!-- ===== Fonts ===== -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap">
+
+<style>
+/* ===== Buttons ===== */
+.issue-buttons {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.issue-buttons button {
+  font-family: "Playfair Display", serif;
+  font-size: 18px;
+  padding: 10px 22px;
+  margin: 0 6px;
+  border: none;
+  border-radius: 4px;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.issue-buttons button:hover:not(.active) {
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.issue-buttons button.active {
+  background: #222;
+  color: #fff;
+  cursor: default;
+}
+
+/* ===== Map Containers ===== */
+.map-container {
+  max-width: 100%;
+  position: relative;
+  display: none;
+}
+
+.map-container.active {
+  display: block;
+}
+
+/* ===== Overlay ===== */
+.rotateOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* ===== Markers ===== */
+.jcl-marker img {
+  pointer-events: none;
+}
+</style>
+
+<!-- ===== BUTTONS ===== -->
+<div class="issue-buttons">
+  <button class="active" onclick="switchMap('state', this)" disabled>State</button>
+  <button onclick="switchMap('national', this)">National</button>
+</div>
+
+<!-- ================= STATE MAP ================= -->
+<div id="stateMap" class="map-container active">
+  <img src="./massachusetts.png" usemap="#state-map" style="width:100%;">
+
+  <div id="rotateOverlayState" class="rotateOverlay">
+    Rotate to landscape
+  </div>
+
+  <map name="state-map">
+    <area href="https://blacc.majcl.org/" coords="2312,1546,15" shape="circle">
+    <area href="https://www.bls-jcl.org/" coords="2398,1425,15" shape="circle">
+    <area href="https://www.westonlatinclub.com/" coords="2035,1603,15" shape="circle">
+    <area href="https://sites.google.com/wpsstudent.com/whsjcl/home" coords="2194,1221,15" shape="circle">
+    <area href="https://sites.google.com/view/shrewsbury-jcl" coords="1638,1479,15" shape="circle">
+  </map>
+</div>
+
+<!-- ================= NATIONAL MAP ================= -->
+<div id="nationalMap" class="map-container">
+  <img src="./north-america.png" usemap="#national-map" style="width:100%;">
+
+  <div id="rotateOverlayNational" class="rotateOverlay">
+    Rotate to landscape
+  </div>
+
+  <map name="national-map">
+    <area href="https://sites.google.com/view/alabama-jcl" coords="2522,2897,20" shape="circle">
+    <area href="https://www.cajcl.org/" coords="1202,2624,20" shape="circle">
+    <area href="https://www.massjcl.org/" coords="3021,2261,20" shape="circle">
+    <!-- keep rest same -->
+  </map>
+</div>
+
+<script>
+const ICON_SCALE = 2.5;
+
+/* ===== SWITCH MAP ===== */
+function switchMap(type, btn) {
+  document.querySelectorAll('.map-container').forEach(m => m.classList.remove('active'));
+  document.getElementById(type + 'Map').classList.add('active');
+
+  document.querySelectorAll('.issue-buttons button').forEach(b => {
+    b.classList.remove('active');
+    b.disabled = false;
+  });
+
+  btn.classList.add('active');
+  btn.disabled = true;
+
+  resizeImageMap();
+}
+
+/* ===== RESIZE MAP ===== */
+function resizeImageMap() {
+  document.querySelectorAll('img[usemap]').forEach(img => {
+    if (!img.naturalWidth) return;
+
+    const mapName = img.useMap.replace('#','');
+    const areas = document.querySelectorAll(`map[name="${mapName}"] area`);
+
+    areas.forEach(area => {
+      if (!area.dataset.coords) {
+        area.dataset.coords = area.coords;
+      }
+
+      const [x,y,r] = area.dataset.coords.split(',').map(Number);
+
+      area.coords = [
+        x / img.naturalWidth * img.width,
+        y / img.naturalHeight * img.height,
+        r / img.naturalWidth * img.width
+      ].join(',');
+    });
+
+    repositionMarkers(img);
+  });
+}
+
+/* ===== MARKERS ===== */
+function repositionMarkers(img) {
+  const parent = img.parentElement;
+  parent.querySelectorAll('.jcl-marker').forEach(m => m.remove());
+
+  const areas = document.querySelectorAll(`map[name="${img.useMap.replace('#','')}"] area`);
+
+  areas.forEach(area => {
+    const [x,y] = area.dataset.coords.split(',').map(Number);
+
+    const marker = document.createElement('a');
+    marker.href = area.href;
+    marker.className = 'jcl-marker';
+
+    marker.style.position = 'absolute';
+    marker.style.left = (x/img.naturalWidth*100)+'%';
+    marker.style.top = (y/img.naturalHeight*100)+'%';
+    marker.style.transform = 'translate(-50%,-50%)';
+
+    const icon = document.createElement('img');
+    icon.src = 'https://www.njcl.org/Portals/1/JCL_wreath.png';
+    icon.style.width = '30px';
+
+    marker.appendChild(icon);
+    parent.appendChild(marker);
+  });
+}
+
+/* ===== INIT ===== */
+window.addEventListener('load', resizeImageMap);
+window.addEventListener('resize', resizeImageMap);
+</script>
