@@ -202,12 +202,14 @@ function resizeImageMap() {
 
       const [x,y,r] = area.dataset.coords.split(',').map(Number);
 
-      area.coords = [
-        x / img.naturalWidth * img.width,
-        y / img.naturalHeight * img.height,
-        r / img.naturalWidth * img.width
-      ].join(',');
-    });
+      const ORIGINAL_WIDTH = 3200;
+const ORIGINAL_HEIGHT = 3200;
+
+area.coords = [
+  x / ORIGINAL_WIDTH * img.width,
+  y / ORIGINAL_HEIGHT * img.height,
+  r / ORIGINAL_WIDTH * img.width
+].join(',');
 
     repositionMarkers(img);
   });
