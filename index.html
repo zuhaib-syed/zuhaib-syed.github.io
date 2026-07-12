@@ -154,26 +154,25 @@ table {
     main {
   min-height: 140vh;
   width: 100%;
-  padding: clamp(2rem, 5vw, 5rem) 0;
+  padding: 25px 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(2rem, 5vw, 4rem);
+  gap: 25px;
 }
 
 .parchment {
-  width: 90vw;
-  height: auto;
+  width: 95vw;
 
   padding:
-    clamp(3rem, 8vw, 7rem)
-    clamp(2rem, 7vw, 7rem);
+    clamp(2rem, 4vw, 3.5rem)
+    clamp(2.5rem, 6vw, 6rem);
 
   background-image: url("assets/parchment-box.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100% 100%;
+  background-size: 135% 100%;
 
   color: #4c2818;
   overflow-wrap: break-word;
@@ -196,11 +195,13 @@ table {
 
 @media (max-width: 700px) {
   .parchment {
-    width: 94vw;
+    width: 95vw;
 
     padding:
-      clamp(2.5rem, 12vw, 4rem)
-      clamp(1.5rem, 8vw, 3rem);
+      2rem
+      clamp(1.75rem, 8vw, 3rem);
+
+    background-size: 150% 100%;
   }
 }
   </style>
