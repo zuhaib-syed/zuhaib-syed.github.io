@@ -1,41 +1,3 @@
-<?php
-declare(strict_types=1);
-
-$siteName = 'Kainocor';
-$tagline  = 'Novelty for Antiquity';
-
-$navigation = [
-    'Home' => 'index.php',
-    'About' => [
-        'About Kainocor'       => 'about.php',
-        'Mission and Purpose'  => 'mission.php',
-        'History'              => 'history.php',
-    ],
-    'Ancient World' => [
-        'Ancient Greece' => 'greece.php',
-        'Ancient Rome'   => 'rome.php',
-        'Ancient Egypt'  => 'egypt.php',
-    ],
-    'Culture' => [
-        'Literature' => 'literature.php',
-        'Mythology'  => 'mythology.php',
-        'Art'        => 'art.php',
-    ],
-    'Contact' => 'contact.php',
-];
-
-$currentPage = basename($_SERVER['PHP_SELF'] ?? 'index.php');
-
-function escape(string $value): string
-{
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
-function isActivePage(string $url, string $currentPage): bool
-{
-    return basename($url) === $currentPage;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +13,7 @@ function isActivePage(string $url, string $currentPage): bool
         content="Kainocor: Novelty for Antiquity."
     >
 
-    <title><?= escape($siteName) ?> | <?= escape($tagline) ?></title>
+    <title>Kainocor | Novelty for Antiquity</title>
 
     <!-- Antique-style fonts. Remove these links if you want local fonts only. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -660,8 +622,8 @@ function isActivePage(string $url, string $currentPage): bool
 
     <header class="hero">
         <div class="logo-card">
-            <h1 class="site-title"><?= escape($siteName) ?></h1>
-            <p class="site-tagline"><?= escape($tagline) ?></p>
+            <h1 class="site-title">Kainocor</h1>
+            <p class="site-tagline">Novelty for Antiquity</p>
         </div>
     </header>
 
@@ -678,62 +640,67 @@ function isActivePage(string $url, string $currentPage): bool
 
                 <nav aria-label="Kainocor pages">
                     <ul class="wiki-nav">
+                        <li>
+                            <a href="index.html" class="active">Home</a>
+                        </li>
 
-                        <?php foreach ($navigation as $label => $destination): ?>
+                        <li>
+                            <button
+                                class="nav-section-button"
+                                type="button"
+                                aria-expanded="true"
+                                aria-controls="section-about"
+                            >
+                                <span>About</span>
+                                <span class="nav-arrow" aria-hidden="true">▶</span>
+                            </button>
 
-                            <?php if (is_array($destination)): ?>
+                            <ul class="submenu" id="section-about">
+                                <li><a href="about.html">About Kainocor</a></li>
+                                <li><a href="mission.html">Mission and Purpose</a></li>
+                                <li><a href="history.html">History</a></li>
+                            </ul>
+                        </li>
 
-                                <?php
-                                $sectionId = 'section-' . preg_replace(
-                                    '/[^a-z0-9]+/i',
-                                    '-',
-                                    strtolower($label)
-                                );
-                                ?>
+                        <li>
+                            <button
+                                class="nav-section-button"
+                                type="button"
+                                aria-expanded="true"
+                                aria-controls="section-ancient-world"
+                            >
+                                <span>Ancient World</span>
+                                <span class="nav-arrow" aria-hidden="true">▶</span>
+                            </button>
 
-                                <li>
-                                    <button
-                                        class="nav-section-button"
-                                        type="button"
-                                        aria-expanded="true"
-                                        aria-controls="<?= escape($sectionId) ?>"
-                                    >
-                                        <span><?= escape($label) ?></span>
-                                        <span class="nav-arrow" aria-hidden="true">▶</span>
-                                    </button>
+                            <ul class="submenu" id="section-ancient-world">
+                                <li><a href="greece.html">Ancient Greece</a></li>
+                                <li><a href="rome.html">Ancient Rome</a></li>
+                                <li><a href="egypt.html">Ancient Egypt</a></li>
+                            </ul>
+                        </li>
 
-                                    <ul
-                                        class="submenu"
-                                        id="<?= escape($sectionId) ?>"
-                                    >
-                                        <?php foreach ($destination as $childLabel => $childUrl): ?>
-                                            <li>
-                                                <a
-                                                    href="<?= escape($childUrl) ?>"
-                                                    class="<?= isActivePage($childUrl, $currentPage) ? 'active' : '' ?>"
-                                                >
-                                                    <?= escape($childLabel) ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </li>
+                        <li>
+                            <button
+                                class="nav-section-button"
+                                type="button"
+                                aria-expanded="true"
+                                aria-controls="section-culture"
+                            >
+                                <span>Culture</span>
+                                <span class="nav-arrow" aria-hidden="true">▶</span>
+                            </button>
 
-                            <?php else: ?>
+                            <ul class="submenu" id="section-culture">
+                                <li><a href="literature.html">Literature</a></li>
+                                <li><a href="mythology.html">Mythology</a></li>
+                                <li><a href="art.html">Art</a></li>
+                            </ul>
+                        </li>
 
-                                <li>
-                                    <a
-                                        href="<?= escape($destination) ?>"
-                                        class="<?= isActivePage($destination, $currentPage) ? 'active' : '' ?>"
-                                    >
-                                        <?= escape($label) ?>
-                                    </a>
-                                </li>
-
-                            <?php endif; ?>
-
-                        <?php endforeach; ?>
-
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -770,7 +737,7 @@ function isActivePage(string $url, string $currentPage): bool
                 </div>
 
                 <div class="link-grid">
-                    <a class="feature-link" href="greece.php">
+                    <a class="feature-link" href="greece.html">
                         <strong>Ancient Greece</strong>
                         <span>
                             Explore Greek history, literature,
@@ -778,7 +745,7 @@ function isActivePage(string $url, string $currentPage): bool
                         </span>
                     </a>
 
-                    <a class="feature-link" href="rome.php">
+                    <a class="feature-link" href="rome.html">
                         <strong>Ancient Rome</strong>
                         <span>
                             Discover Roman society, politics,
@@ -786,7 +753,7 @@ function isActivePage(string $url, string $currentPage): bool
                         </span>
                     </a>
 
-                    <a class="feature-link" href="mythology.php">
+                    <a class="feature-link" href="mythology.html">
                         <strong>Mythology</strong>
                         <span>
                             Read about gods, heroes, monsters,
@@ -801,7 +768,7 @@ function isActivePage(string $url, string $currentPage): bool
     </div>
 
     <footer class="site-footer">
-        &copy; <?= date('Y') ?> <?= escape($siteName) ?>.
+        &copy; <span id="copyrightYear"></span> Kainocor.
         All rights reserved.
     </footer>
 
@@ -821,6 +788,11 @@ function isActivePage(string $url, string $currentPage): bool
         const toggle = document.getElementById("sidebarToggle");
         const backdrop = document.getElementById("sidebarBackdrop");
         const sectionButtons = document.querySelectorAll(".nav-section-button");
+        const copyrightYear = document.getElementById("copyrightYear");
+
+        if (copyrightYear) {
+            copyrightYear.textContent = String(new Date().getFullYear());
+        }
 
         const setSidebarState = (isOpen) => {
             body.classList.toggle("sidebar-open", isOpen);
