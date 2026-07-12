@@ -159,15 +159,15 @@ table {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: 12px;
 }
 
 .parchment {
   width: 95vw;
 
   padding:
-    clamp(2rem, 4vw, 3.5rem)
-    clamp(2.5rem, 6vw, 6rem);
+    clamp(3rem, 5vw, 4.5rem)
+    clamp(4rem, 8vw, 8rem);
 
   background-image: url("assets/parchment-box.png");
   background-repeat: no-repeat;
@@ -176,6 +176,15 @@ table {
 
   color: #4c2818;
   overflow-wrap: break-word;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.parchment:hover {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.28));
 }
 
 .parchment > :first-child {
