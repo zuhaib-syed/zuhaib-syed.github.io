@@ -5,10 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zuhaib Syed</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Marcellus&family=Old+Standard+TT:wght@400;700&family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap"
+  rel="stylesheet"
+>
+
+<style>
+    :root {
+  /*
+    Vintage Goode substitute:
+    UnifrakturCook
+  */
+  --font-heading:
+    "UnifrakturCook",
+    Georgia,
+    serif;
+
+  /*
+    Old Standard:
+    Google Fonts calls it Old Standard TT.
+  */
+  --font-body:
+    "Old Standard TT",
+    Palatino,
+    "Palatino Linotype",
+    "Book Antiqua",
+    serif;
+
+  /*
+    Vintage Modern substitute.
+  */
+  --font-vintage-modern:
+    "Cormorant Garamond",
+    Palatino,
+    "Palatino Linotype",
+    serif;
+
+  /*
+    Engravers' Old English BT substitute.
+  */
+  --font-old-english:
+    "UnifrakturMaguntia",
+    Georgia,
+    serif;
+
+  /*
+    Zenaida substitute.
+  */
+  --font-zenaida:
+    "Marcellus",
+    Palatino,
+    "Palatino Linotype",
+    serif;
+}
+
+* {
+  box-sizing: border-box;
+}
 
     html,
     body {
@@ -17,15 +74,68 @@
     }
 
     body {
-      background-color: #c0a87e;
-      background-image: url("assets/background.png");
-      background-repeat: repeat-y;
-      background-position: top center;
-      background-size: 100% auto;
+  background-color: #c0a87e;
+  background-image: url("assets/background.png");
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 100% auto;
 
-      color: #4c2818;
-      font-family: Georgia, "Times New Roman", serif;
-    }
+  color: #4c2818;
+
+  /*
+    Old Standard TT first.
+    Palatino is the last-resort text fallback.
+  */
+  font-family: var(--font-body);
+}
+
+  h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+  /*
+  Use these classes anywhere in your HTML.
+*/
+
+.font-vintage-goode {
+  font-family: var(--font-heading);
+}
+
+.font-vintage-modern {
+  font-family: var(--font-vintage-modern);
+}
+
+.font-old-english {
+  font-family: var(--font-old-english);
+}
+
+.font-old-standard {
+  font-family: var(--font-body);
+}
+
+.font-zenaida {
+  font-family: var(--font-zenaida);
+}
+
+p,
+li,
+blockquote,
+figcaption,
+label,
+input,
+textarea,
+select,
+button,
+table {
+  font-family: var(--font-body);
+}
 
     .site-cover {
       width: 100%;
@@ -42,9 +152,72 @@
     }
 
     main {
-      min-height: 140vh;
-      width: 100%;
-    }
+  min-height: 140vh;
+  width: 100%;
+  padding: clamp(2rem, 5vw, 5rem) 0;
+}
+
+#parchment-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.parchment {
+  /*
+    Ninety percent of the screen width.
+  */
+  width: 90vw;
+
+  /*
+    No fixed height:
+    the parchment grows to fit its HTML.
+  */
+  height: auto;
+
+  /*
+    Leave enough room around the text for the
+    decorative parchment edges.
+  */
+  padding:
+    clamp(3rem, 8vw, 7rem)
+    clamp(2rem, 7vw, 7rem);
+
+  background-image: url("assets/parchment-box.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+
+  color: #4c2818;
+  overflow-wrap: break-word;
+}
+
+.parchment > :first-child {
+  margin-top: 0;
+}
+
+.parchment > :last-child {
+  margin-bottom: 0;
+}
+
+.parchment img,
+.parchment video,
+.parchment iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 700px) {
+  .parchment {
+    width: 94vw;
+
+    padding:
+      clamp(2.5rem, 12vw, 4rem)
+      clamp(1.5rem, 8vw, 3rem);
+  }
+}
   </style>
 </head>
 
@@ -59,5 +232,138 @@
   <main>
     <!-- Parchment content boxes will be added here later. -->
   </main>
+  <script>
+  /**
+   * Creates a parchment containing any HTML you provide.
+   *
+   * Example:
+   *
+   * addParchment(`
+   *   <h1>Welcome</h1>
+   *   <p>This is my parchment.</p>
+   * `);
+   *
+   * @param {string} html
+   * The HTML to display inside the parchment.
+   *
+   * @param {object} options
+   * Optional settings such as id and className.
+   *
+   * @returns {HTMLElement|null}
+   */
+  function addParchment(html, options = {}) {
+    const container =
+      document.getElementById("parchment-container");
+
+    if (!container) {
+      console.error(
+        'The element "#parchment-container" could not be found.'
+      );
+
+      return null;
+    }
+
+    const parchment = document.createElement("section");
+
+    parchment.classList.add("parchment");
+
+    if (options.id) {
+      parchment.id = options.id;
+    }
+
+    if (options.className) {
+      const classes = options.className
+        .split(/\s+/)
+        .filter(Boolean);
+
+      parchment.classList.add(...classes);
+    }
+
+    parchment.innerHTML = html;
+
+    if (options.position === "start") {
+      container.prepend(parchment);
+    } else {
+      container.appendChild(parchment);
+    }
+
+    return parchment;
+  }
+
+
+  /**
+   * Changes the HTML inside an existing parchment.
+   *
+   * Example:
+   *
+   * updateParchment(
+   *   "about-me",
+   *   "<h2>New heading</h2><p>New text.</p>"
+   * );
+   */
+  function updateParchment(id, html) {
+    const parchment = document.getElementById(id);
+
+    if (!parchment) {
+      console.warn(
+        `No parchment with the id "${id}" was found.`
+      );
+
+      return null;
+    }
+
+    parchment.innerHTML = html;
+
+    return parchment;
+  }
+
+
+  /**
+   * Removes a parchment by its id.
+   *
+   * Example:
+   *
+   * removeParchment("about-me");
+   */
+  function removeParchment(id) {
+    const parchment = document.getElementById(id);
+
+    if (!parchment) {
+      console.warn(
+        `No parchment with the id "${id}" was found.`
+      );
+
+      return false;
+    }
+
+    parchment.remove();
+
+    return true;
+  }
+
+
+  /*
+    Add your parchments below.
+  */
+
+  addParchment(
+    `
+      <h1>Welcome to My Website</h1>
+
+      <p>
+        This parchment automatically grows vertically to fit
+        whatever HTML is placed inside it.
+      </p>
+
+      <p>
+        Paragraphs use Old Standard TT by default, while headings
+        use UnifrakturCook.
+      </p>
+    `,
+    {
+      id: "welcome-parchment"
+    }
+  );
+</script>
 </body>
 </html>
