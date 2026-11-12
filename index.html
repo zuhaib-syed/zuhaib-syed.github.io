@@ -70,10 +70,11 @@ p, li, blockquote, figcaption, label, input, textarea, select, button, table {
 }
 
 /* ---------- Cover ----------
-   Without JavaScript the cover is a normal full-screen block at the top.
-   With JavaScript (.cover-reveal on <html>) it becomes a fixed top layer
-   that slides up as you scroll, revealing the content sitting still beneath it. */
+   Full-screen, on the top layer. It scrolls away naturally,
+   and the parchments stay in their place on the page. */
 .site-cover {
+  position: relative;
+  z-index: 1000;
   width: 100%;
   height: 100vh;
   height: 100svh;
@@ -81,6 +82,7 @@ p, li, blockquote, figcaption, label, input, textarea, select, button, table {
   padding: 0;
   overflow: hidden;
   background: #c0a87e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
 }
 
 .site-cover img {
@@ -91,38 +93,16 @@ p, li, blockquote, figcaption, label, input, textarea, select, button, table {
   object-position: center;
 }
 
-.cover-reveal .site-cover {
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 1000;
-  transform: translate3d(0, calc(-1 * var(--reveal, 0px)), 0);
-  will-change: transform;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-}
-
-/* Spacer that gives the cover its scroll distance. */
-.cover-spacer { display: none; }
-.cover-reveal .cover-spacer {
-  display: block;
-  height: 100vh;
-  height: 100svh;
-}
-
-/* Keep the content pinned in place while the cover slides off it. */
-.cover-reveal main {
-  min-height: 100vh;        /* guarantees enough scroll room to fully clear the cover */
-  min-height: 100svh;
-  transform: translate3d(0, calc(var(--reveal, 0px) - var(--cover-h, 100vh)), 0);
-}
-
 /* ---------- Content ---------- */
 main {
+  position: relative;
+  z-index: 1;
   width: 100%;
   padding: 25px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;                 /* was 12px, and the PNG added a lot of invisible space on top */
+  gap: 20px;
 }
 
 /*
@@ -194,7 +174,6 @@ a {
       alt="Zuhaib Syed — Welcome to my website"
     >
   </header>
-  <div class="cover-spacer" aria-hidden="true"></div>
 
   <main>
     <div class="parchment">
@@ -209,35 +188,5 @@ a {
       <p><a href="https://photos.app.goo.gl/pikzwNYNP8NG5UiH6">(2026)</a> <a href="https://photos.app.goo.gl/f5gND3F7NugffQMTA">(2025)</a></p>
     </div>
   </main>
-
-  <script>
-    // Cover slides up with the first screen of scrolling and slides back down on scroll-up.
-    (function () {
-      var root = document.documentElement;
-      var cover = document.querySelector('.site-cover');
-      root.classList.add('cover-reveal');
-
-      var coverH = 0, ticking = false;
-
-      function measure() {
-        coverH = cover.offsetHeight;
-        root.style.setProperty('--cover-h', coverH + 'px');
-        update();
-      }
-
-      function update() {
-        ticking = false;
-        var y = Math.min(Math.max(window.scrollY, 0), coverH);
-        root.style.setProperty('--reveal', y + 'px');
-        cover.style.visibility = y >= coverH ? 'hidden' : 'visible';
-      }
-
-      window.addEventListener('scroll', function () {
-        if (!ticking) { ticking = true; requestAnimationFrame(update); }
-      }, { passive: true });
-      window.addEventListener('resize', measure);
-      measure();
-    })();
-  </script>
 </body>
 </html>
