@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zuhaib Syed</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -15,185 +15,145 @@
 >
 
 <style>
-    :root {
-  /*
-    Vintage Goode substitute:
-    UnifrakturCook
-  */
-  --font-heading:
-    "UnifrakturCook",
-    Georgia,
-    serif;
+:root {
+  /* Vintage Goode substitute: UnifrakturCook */
+  --font-heading: "UnifrakturCook", Georgia, serif;
 
-  /*
-    Old Standard:
-    Google Fonts calls it Old Standard TT.
-  */
-  --font-body:
-    "Old Standard TT",
-    Palatino,
-    "Palatino Linotype",
-    "Book Antiqua",
-    serif;
+  /* Old Standard: Google Fonts calls it Old Standard TT. */
+  --font-body: "Old Standard TT", Palatino, "Palatino Linotype", "Book Antiqua", serif;
 
-  /*
-    Vintage Modern substitute.
-  */
-  --font-vintage-modern:
-    "Cormorant Garamond",
-    Palatino,
-    "Palatino Linotype",
-    serif;
+  /* Vintage Modern substitute. */
+  --font-vintage-modern: "Cormorant Garamond", Palatino, "Palatino Linotype", serif;
 
-  /*
-    Engravers' Old English BT substitute.
-  */
-  --font-old-english:
-    "UnifrakturMaguntia",
-    Georgia,
-    serif;
+  /* Engravers' Old English BT substitute. */
+  --font-old-english: "UnifrakturMaguntia", Georgia, serif;
 
-  /*
-    Zenaida substitute.
-  */
-  --font-zenaida:
-    "Marcellus",
-    Palatino,
-    "Palatino Linotype",
-    serif;
+  /* Zenaida substitute. */
+  --font-zenaida: "Marcellus", Palatino, "Palatino Linotype", serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-    }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
 
-    body {
+body {
   background-color: #c0a87e;
   background-image: url("assets/background.png");
   background-repeat: repeat-y;
   background-position: top center;
   background-size: 100% auto;
-
   color: #4c2818;
-
-  /*
-    Old Standard TT first.
-    Palatino is the last-resort text fallback.
-  */
   font-family: var(--font-body);
 }
 
-  h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.1;
 }
 
-  /*
-  Use these classes anywhere in your HTML.
-*/
+/* Use these classes anywhere in your HTML. */
+.font-vintage-goode  { font-family: var(--font-heading); }
+.font-vintage-modern { font-family: var(--font-vintage-modern); }
+.font-old-english    { font-family: var(--font-old-english); }
+.font-old-standard   { font-family: var(--font-body); }
+.font-zenaida        { font-family: var(--font-zenaida); }
 
-.font-vintage-goode {
-  font-family: var(--font-heading);
-}
-
-.font-vintage-modern {
-  font-family: var(--font-vintage-modern);
-}
-
-.font-old-english {
-  font-family: var(--font-old-english);
-}
-
-.font-old-standard {
+p, li, blockquote, figcaption, label, input, textarea, select, button, table {
   font-family: var(--font-body);
 }
 
-.font-zenaida {
-  font-family: var(--font-zenaida);
+/* ---------- Cover ----------
+   Without JavaScript the cover is a normal full-screen block at the top.
+   With JavaScript (.cover-reveal on <html>) it becomes a fixed top layer
+   that slides up as you scroll, revealing the content sitting still beneath it. */
+.site-cover {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #c0a87e;
 }
 
-p,
-li,
-blockquote,
-figcaption,
-label,
-input,
-textarea,
-select,
-button,
-table {
-  font-family: var(--font-body);
+.site-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* fill the whole screen, cropping if needed */
+  object-position: center;
 }
 
-    .site-cover {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
+.cover-reveal .site-cover {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  transform: translate3d(0, calc(-1 * var(--reveal, 0px)), 0);
+  will-change: transform;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+}
 
-    .site-cover img {
-      display: block;
-      width: 100%;
-      height: auto;
-      margin: 0;
-      padding: 0;
-    }
+/* Spacer that gives the cover its scroll distance. */
+.cover-spacer { display: none; }
+.cover-reveal .cover-spacer {
+  display: block;
+  height: 100vh;
+  height: 100svh;
+}
 
-    main {
-  min-height: auto;
+/* Keep the content pinned in place while the cover slides off it. */
+.cover-reveal main {
+  min-height: 100vh;        /* guarantees enough scroll room to fully clear the cover */
+  min-height: 100svh;
+  transform: translate3d(0, calc(var(--reveal, 0px) - var(--cover-h, 100vh)), 0);
+}
+
+/* ---------- Content ---------- */
+main {
   width: 100%;
   padding: 25px 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;                 /* was 12px, and the PNG added a lot of invisible space on top */
 }
 
+/*
+  parchment-box.png is 1920x1080, but the visible paper only spans
+  x 306-1614 and y 185-836; the rest is transparent. These numbers scale
+  the image so the paper itself fills the box exactly, at any height:
+    size     = 1920/1308, 1080/651
+    position = 306/(1920-1308), 185/(1080-651)
+*/
 .parchment {
-  width: 95vw;
-
-  padding:
-    clamp(3rem, 5vw, 4.5rem)
-    clamp(4rem, 8vw, 8rem);
+  width: min(95vw, 1400px);
+  padding: clamp(2rem, 3.5vw, 3rem) clamp(2rem, 5vw, 4.5rem);
 
   background-image: url("assets/parchment-box.png");
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 135% 100%;
+  background-size: 146.8% 165.9%;
+  background-position: 50% 43.1%;
 
   color: #4c2818;
   overflow-wrap: break-word;
 
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease;
+  transition: transform .25s ease, filter .25s ease;
 }
 
 .parchment:hover {
-    transform: translateY(-2px);
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,.28));
+  transform: translateY(-2px);
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .28));
 }
 
-.parchment > :first-child {
-  margin-top: 0;
-}
-
-.parchment > :last-child {
-  margin-bottom: 0;
-}
+.parchment > :first-child { margin-top: 0; }
+.parchment > :last-child  { margin-bottom: 0; }
 
 .parchment img,
 .parchment video,
@@ -205,27 +165,26 @@ table {
 @media (max-width: 700px) {
   .parchment {
     width: 95vw;
-
-    padding:
-      2rem
-      clamp(1.75rem, 8vw, 3rem);
-
-    background-size: 150% 100%;
+    padding: 1.75rem clamp(1.5rem, 7vw, 2.5rem);
   }
 }
 
-  p, a {
-    font-size: 16pt;
-  }
+p, a {
+  font-size: 16pt;
+}
 
-  h1 {
-    font-size: 24pt;
-  }
+h1 {
+  font-size: 24pt;
+}
 
-  a {
-    text-decoration: none !important;
-  }
-  </style>
+a {
+  text-decoration: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parchment { transition: none; }
+}
+</style>
 </head>
 
 <body>
@@ -235,19 +194,50 @@ table {
       alt="Zuhaib Syed — Welcome to my website"
     >
   </header>
+  <div class="cover-spacer" aria-hidden="true"></div>
 
   <main>
-  <div class="parchment">
-    <h1>Zuhaib Syed</h1>
-    <p>Welcome to my portfolio! Feel free to have a look at some of my projects and other personal work.</p>
-    <p>Find me on LinkedIn: <a href="https://linkedin.com/in/zuhaibsyed">@zuhaibsyed</a></p><br>
-  </div>
-  <div class="parchment">
-    <h1>Photography</h1>
-    <p>In recent summers I have taken to capturing any natural outdoor scenery that I find particularly inspiring, such as sunsets and skylines.</p>
-    <p>Feel free to use my photos with attribution; the albums are linked below.</p>
-    <a href="https://photos.app.goo.gl/pikzwNYNP8NG5UiH6">(2026)</a> <a href="https://photos.app.goo.gl/f5gND3F7NugffQMTA">(2025)</a>
-  </div>
-</main>
+    <div class="parchment">
+      <h1>Zuhaib Syed</h1>
+      <p>Welcome to my portfolio! Feel free to have a look at some of my projects and other personal work.</p>
+      <p>Find me on LinkedIn: <a href="https://linkedin.com/in/zuhaibsyed">@zuhaibsyed</a></p>
+    </div>
+    <div class="parchment">
+      <h1>Photography</h1>
+      <p>In recent summers I have taken to capturing any natural outdoor scenery that I find particularly inspiring, such as sunsets and skylines.</p>
+      <p>Feel free to use my photos with attribution; the albums are linked below.</p>
+      <p><a href="https://photos.app.goo.gl/pikzwNYNP8NG5UiH6">(2026)</a> <a href="https://photos.app.goo.gl/f5gND3F7NugffQMTA">(2025)</a></p>
+    </div>
+  </main>
+
+  <script>
+    // Cover slides up with the first screen of scrolling and slides back down on scroll-up.
+    (function () {
+      var root = document.documentElement;
+      var cover = document.querySelector('.site-cover');
+      root.classList.add('cover-reveal');
+
+      var coverH = 0, ticking = false;
+
+      function measure() {
+        coverH = cover.offsetHeight;
+        root.style.setProperty('--cover-h', coverH + 'px');
+        update();
+      }
+
+      function update() {
+        ticking = false;
+        var y = Math.min(Math.max(window.scrollY, 0), coverH);
+        root.style.setProperty('--reveal', y + 'px');
+        cover.style.visibility = y >= coverH ? 'hidden' : 'visible';
+      }
+
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener('resize', measure);
+      measure();
+    })();
+  </script>
 </body>
 </html>
