@@ -44,10 +44,6 @@ body {
 
 body {
   background-color: #c0a87e;
-  background-image: url("assets/background.png");
-  background-repeat: repeat-y;
-  background-position: top center;
-  background-size: 100% auto;
   color: #4c2818;
   font-family: var(--font-body);
 }
@@ -69,9 +65,8 @@ p, li, blockquote, figcaption, label, input, textarea, select, button, table {
   font-family: var(--font-body);
 }
 
-/* ---------- Cover ----------
-   Full-screen, on the top layer. It scrolls away naturally,
-   and the parchments stay in their place on the page. */
+/* ---------- Front layer: cover ----------
+   Starts front and center, scrolls up and away. */
 .site-cover {
   position: relative;
   z-index: 1000;
@@ -93,10 +88,37 @@ p, li, blockquote, figcaption, label, input, textarea, select, button, table {
   object-position: center;
 }
 
+/* ---------- Back layer ----------
+   Background + parchments. Pinned in place (doesn't move at all) until the
+   cover has scrolled completely off the top, then scrolls normally. */
+.stage {
+  position: relative;
+}
+
+.back-layer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  background-color: #c0a87e;
+  background-image: url("assets/background.png");
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 100% auto;
+}
+
+.js .back-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.js .back-layer.pinned {
+  position: fixed;
+}
+
 /* ---------- Content ---------- */
 main {
-  position: relative;
-  z-index: 1;
   width: 100%;
   padding: 25px 0;
   display: flex;
@@ -175,6 +197,8 @@ a {
     >
   </header>
 
+  <div class="stage">
+  <div class="back-layer">
   <main>
     <div class="parchment">
       <h1>Zuhaib Syed</h1>
@@ -188,5 +212,33 @@ a {
       <p><a href="https://photos.app.goo.gl/pikzwNYNP8NG5UiH6">(2026)</a> <a href="https://photos.app.goo.gl/f5gND3F7NugffQMTA">(2025)</a></p>
     </div>
   </main>
+  </div>
+  </div>
+
+  <script>
+    // Back layer stays pinned while the cover is on screen, then scrolls normally.
+    (function () {
+      var root = document.documentElement;
+      var cover = document.querySelector('.site-cover');
+      var stage = document.querySelector('.stage');
+      var layer = document.querySelector('.back-layer');
+      root.classList.add('js');
+
+      function sizeStage() {
+        stage.style.height = layer.offsetHeight + 'px';
+        update();
+      }
+
+      function update() {
+        layer.classList.toggle('pinned', window.scrollY < cover.offsetHeight);
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', sizeStage);
+      if ('ResizeObserver' in window) new ResizeObserver(sizeStage).observe(layer);
+      window.addEventListener('load', sizeStage);
+      sizeStage();
+    })();
+  </script>
 </body>
 </html>
